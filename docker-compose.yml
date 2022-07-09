@@ -1,18 +1,29 @@
 version: '3.1'
 services:
-  postgres-db:
-    container_name: postgres-db
+  api:
+    container_name: cmdb-api
+    build: ./api
+    environment:
+      API_USERNAME: "${API_USERNAME}"
+      API_PASSWORD: "${API_PASSWORD}"
+    restart: always
+    volumes:
+      - ./api:/api
+    ports:
+      - "8000:8000"
+  db:
+    container_name: cmdb-db
     image: postgres:latest
     restart: always
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: test123
-      POSTGRES_DB: cmdb
+      POSTGRES_USER: "${DB_USERNAME}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+      POSTGRES_DB: "${DB_NAME}"
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - postgres-db-data:/var/lib/postgresql/data
       - ./db/init:/docker-entrypoint-initdb.d
     ports:
-      - 5432:5432
+      - "5432:5432"
 volumes:
   postgres-db-data:
