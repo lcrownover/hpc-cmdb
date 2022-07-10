@@ -1,13 +1,13 @@
 CREATE TABLE IF NOT EXISTS entries (
 	entry_id serial PRIMARY KEY,
-	hostname varchar (100) UNIQUE NOT NULL
+	name varchar (100) UNIQUE NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS tags (
 	tag_id serial PRIMARY KEY,
-	tag_name VARCHAR (40) NOT NULL,
-	tag_value VARCHAR (120) NOT NULL,
-	UNIQUE(tag_name, tag_value)
+	name VARCHAR (40) NOT NULL,
+	value VARCHAR (120) NOT NULL,
+	UNIQUE(name, value)
 );
 
 CREATE TABLE IF NOT EXISTS entries_tags (

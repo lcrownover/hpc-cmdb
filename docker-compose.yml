@@ -2,10 +2,14 @@ version: '3.1'
 services:
   api:
     container_name: cmdb-api
+    depends_on:
+      - db
     build: ./api
     environment:
       API_USERNAME: "${API_USERNAME}"
       API_PASSWORD: "${API_PASSWORD}"
+      DB_USERNAME: "${DB_USERNAME}"
+      DB_PASSWORD: "${DB_PASSWORD}"
     restart: always
     volumes:
       - ./api:/api
