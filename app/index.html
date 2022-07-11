@@ -1,13 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HPC cmdb</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+
+<style>
+.wrapper {
+  display: flex;
+  flex-flow: row wrap;
+  font-weight: bold;
+  text-align: center;
+}
+
+.wrapper > * {
+  padding: 10px;
+  flex: 1 100%;
+}
+
+.header {
+  padding: 20px;
+  background: #576F72;
+}
+
+.main {
+  text-align: left;
+  background: #E4DCCF;
+}
+
+body {
+  background-color: #F0EBE3;
+  padding: 2em;
+}
+
+h1   {color: blue;}
+p    {color: red;}
+</style>
+
+<script>
+let entryList = document.getElementById("entryList");
+
+function getEntries() {
+    fetch('http://localhost:8000/entries/')
+      .then(response => response.json())
+        .then(( responseJson ) => {return responseJson})
+}
+async function myCall() {
+    return await getEntries()
+}
+
+let data = myCall();
+console.log(data);
+
+// for (var item of data) {
+//   let li = document.createElement("li");
+//   li.innerText = item;
+//   list.appendChild(li);
+// });
+</script>
+
+<html>
+    <div class="wrapper">
+        <header class="header">Header</header>
+        <article class="main">
+            <p>this is some content!</p>
+            <ul id="entryList"></ul>
+        </article>
+    </div>
 </html>

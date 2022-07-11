@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, validator
 import psycopg2
 import os
@@ -60,14 +61,26 @@ db_port = 5432
 db_name = "cmdb"
 
 app = FastAPI()
-
-conn = psycopg2.connect(
-    database=db_name,
-    user=db_username,
-    password=db_password,
-    host="cmdb-db",
-    port=db_port,
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
+
+try:
+    conn = psycopg2.connect(
+        database=db_name,
+        user=db_username,
+        password=db_password,
+        host="cmdb-db",
+        port=db_port,
+    )
+except Exception as e:
+    sys.stderr.write(f"Failed to connect to database. It might not be up yet.\n{e}\n")
+    exit(1)
+
 cur = conn.cursor()
 
 
