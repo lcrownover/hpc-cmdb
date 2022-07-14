@@ -38,6 +38,7 @@ function createItems(data) {
     let entryList = document.getElementById("entryList");
     for (var item of data) {
         let li = document.createElement("li");
+        li.onclick = () => {alert("help")}
         li.innerText = item.name;
         entryList.appendChild(li);
     };

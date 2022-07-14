@@ -300,10 +300,10 @@ async def create_entry(entry: Entry) -> Entry:
     return entry
 
 
-@app.delete("/entries/")
-async def delete_all_entries() -> None:
-    # i don't like the idea of deleting everything with a single DELETE call to a single URL
-    raise HTTPException(status_code=500, detail="Unimplemented. Don't want to delete everything by mistake!")
+# @app.delete("/entries/")
+# async def delete_all_entries() -> None:
+#     # i don't like the idea of deleting everything with a single DELETE call to a single URL
+#     raise HTTPException(status_code=500, detail="Unimplemented. Don't want to delete everything by mistake!")
 #
 ###
 
@@ -360,9 +360,9 @@ async def add_tag(name: str, tag: Tag):
     return entry
 
 
-@app.delete("/entries/{name}/tags/")
-async def delete_all_tags_for_entry() -> None:
-    raise HTTPException(status_code=500, detail="Unimplemented. Don't want to delete everything by mistake!")
+# @app.delete("/entries/{name}/tags/")
+# async def delete_all_tags_for_entry() -> None:
+#     raise HTTPException(status_code=500, detail="Unimplemented. Don't want to delete everything by mistake!")
 #
 ###
 
