@@ -1,6 +1,0 @@
----
-api_users:
-  - username: test
-    password: testy
-
-sqlite_path: ./sqlite.db
