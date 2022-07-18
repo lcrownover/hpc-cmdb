@@ -1,82 +1,84 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vue App</title>
-<style>
-.container {
-	display: flex;
-}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue App</title>
+    <style>
+        .container {
+            display: flex;
+        }
 
-.entryList {
-	min-width: 60vw;
-}
+        .entryList {
+            min-width: 60vw;
+        }
 
-.entryForm {
-	min-width: 40vw;
-}
-</style>
+        .entryForm {
+            min-width: 40vw;
+        }
+    </style>
 </head>
 
 <body>
-<div id="app" class="container">
-    <div class="entryList">
-    <ul>
-        <li v-for="entry in entries">
-            <h2>{{entry.name}}</h2>
+    <div id="app" class="container">
+        <div class="entryList">
             <ul>
-                <li v-for="tag in entry.tags">
-                    {{tag.name}}:{{tag.value}}
+                <li v-for="entry in entries">
+                    <h2>{{entry.name}}</h2>
+                    <ul>
+                        <li v-for="tag in entry.tags">
+                            {{tag.name}}:{{tag.value}}
+                        </li>
+                    </ul>
                 </li>
             </ul>
-        </li>
-    </ul>
+        </div>
+        <div class="entryForm">
+            Entry Name: <input v-model="new_entry" type="text" class='name-entry'>
+            <input v-model="tag_name" type="text">
+            <input v-model="tag_value" v-on:keyup.enter="addEntry" type="text">
+            <button @click="addEntry">Add Entry</button>
+        </div>
     </div>
-    <div class="entryForm">
-        Entry Name: <input v-model="new_entry" type="text" class='name-entry'>
-        <input v-model="tag_name" type="text">
-        <input v-model="tag_value" v-on:keyup.enter="addEntry" type="text">
-        <button @click="addEntry">Add Entry</button>
-    </div>
-</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.7.7/vue.common.dev.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
-<script>
-    let app = new Vue({
-        el: '#app',
-        data: {
-            entries: [],
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.7.7/vue.common.dev.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+    <script>
+        let app = new Vue({
+            el: '#app',
+            data: {
+                entries: [],
 
-            new_entry: "",
-            new_tags: [],
-            tag_name: "",
-            tag_value: "",
-        },
-        methods: {
-            query: function(){
-                axios({
-                    url: 'http://localhost:8000/entries/',
-                    method: 'get',
-                }).then(response => {
-                        this.entries = response.data;
-                })
+                new_entry: "",
+                new_tags: [],
+                tag_name: "",
+                tag_value: "",
             },
-            addEntry: function() {
-                axios({
-                    url: 'http://localhost:8000/entries/',
-                    method: 'post',
-                    data: {"name": this.new_entry, "tags": [{"name": this.tag_name, "value": this.tag_value}]}
-                })
+            methods: {
+                query: function () {
+                    axios({
+                        url: 'http://localhost:8000/entries/',
+                        method: 'get',
+                    }).then(response => {
+                        this.entries = response.data;
+                    })
+                },
+                addEntry: function () {
+                    axios({
+                        url: 'http://localhost:8000/entries/',
+                        method: 'post',
+                        data: {"name": this.new_entry, "tags": [{"name": this.tag_name, "value": this.tag_value}]}
+                    })
+                }
+            },
+            created: function () {
+                this.query()
             }
-        },
-        created: function (){
-            this.query()
-        }
-    })
-</script>
+        })
+    </script>
 
 </body>
+
 </html>
