@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware import Middleware
+from starlette.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, validator
 import psycopg2
 import os
@@ -9,7 +10,7 @@ import re
 
 
 def validate_name(name: str) -> str:
-    valid_re = re.compile(r'^[a-zA-Z0-9-_]+$')
+    valid_re = re.compile(r"^[a-zA-Z0-9-_]+$")
     if not valid_re.match(name):
         raise ValueError(f"Names must match pattern: {valid_re.pattern}")
     return name
@@ -19,26 +20,31 @@ class Tag(BaseModel):
     name: str
     value: str
 
-    _validate_name = validator('name', allow_reuse=True)(validate_name)
+    _validate_name = validator("name", allow_reuse=True)(validate_name)
 
 
 class Entry(BaseModel):
     name: str
     tags: list[Tag] = []
 
-    _validate_name = validator('name', allow_reuse=True)(validate_name)
+    _validate_name = validator("name", allow_reuse=True)(validate_name)
+
 
 class DuplicateEntryError(Exception):
     pass
 
+
 class DuplicateTagError(Exception):
     pass
+
 
 class EntryNotFoundError(Exception):
     pass
 
+
 class TagNotFoundError(Exception):
     pass
+
 
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -60,14 +66,24 @@ db_password = os.getenv("DB_PASSWORD")
 db_port = 5432
 db_name = "cmdb"
 
+
+origins = [
+    "http://localhost",
+    "http://localhost:8080",
+    "http://localhost:8000",
+    "http://127.0.0.1:8080",
+    "http://127.0.0.1:8000",
+]
+
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["POST","GET"],
+    allow_headers=['*'],
 )
+
 
 try:
     conn = psycopg2.connect(
@@ -238,7 +254,6 @@ def db_add_tag_to_entry(entry: Entry, tag: Tag) -> Entry:
     return db_get_entry(entry.name)
 
 
-
 pre_data = [
     Entry(
         name="spiderman",
@@ -285,7 +300,9 @@ async def get_all_entries() -> list[Entry]:
 async def create_entry(entry: Entry) -> Entry:
     # check for duplicate tag names in the provided entry tags
     if duplicate_tags_found(entry.tags):
-        raise HTTPException(status_code=500, detail=f"Duplicate name found in tag names")
+        raise HTTPException(
+            status_code=500, detail=f"Duplicate name found in tag names"
+        )
 
     # insert the entry, then get the existing entry back out
     # this is because you may post an entry with a single tag, but you should
@@ -325,7 +342,9 @@ async def get_entry(name: str) -> Entry:
 
 @app.post("/entries/{name}/")
 async def post_entry() -> None:
-    raise HTTPException(status_code=500, detail="Use /entries/{name}/tags/ to manage tags.")
+    raise HTTPException(
+        status_code=500, detail="Use /entries/{name}/tags/ to manage tags."
+    )
 
 
 @app.delete("/entries/{name}/", response_model=Entry)
@@ -334,6 +353,8 @@ async def delete_entry(name: str) -> Entry:
         return db_delete_entry(name)
     except:
         raise HTTPException(status_code=404, detail="Entry not found")
+
+
 #
 ###
 
@@ -390,7 +411,9 @@ async def add_tag_to_entry(name: str, tag_name: str, tag: Tag):
     except EntryNotFoundError:
         raise HTTPException(status_code=404, detail="Entry not found")
     if tag_name != tag.name:
-        raise HTTPException(status_code=500, detail="Provided tag data does not match tag name in URL")
+        raise HTTPException(
+            status_code=500, detail="Provided tag data does not match tag name in URL"
+        )
     entry = db_add_tag_to_entry(db_get_entry(name), tag)
     return entry
 
@@ -405,5 +428,7 @@ async def delete_tag_from_entry(name: str, tag_name: str) -> Entry:
         if existing_tag.name == tag_name:
             db_remove_tag_from_entry(entry, existing_tag)
     return db_get_entry(name)
+
+
 #
 ###

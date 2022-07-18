@@ -1,61 +1,82 @@
 <!DOCTYPE html>
-
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vue App</title>
 <style>
-.wrapper {
-  display: flex;
-  flex-flow: row wrap;
-  font-weight: bold;
-  text-align: center;
+.container {
+	display: flex;
 }
 
-.wrapper > * {
-  padding: 10px;
-  flex: 1 100%;
+.entryList {
+	min-width: 60vw;
 }
 
-.header {
-  padding: 20px;
-  background: #576F72;
+.entryForm {
+	min-width: 40vw;
 }
-
-.main {
-  text-align: left;
-  background: #E4DCCF;
-}
-
-body {
-  background-color: #F0EBE3;
-  padding: 2em;
-}
-
-h1   {color: blue;}
-p    {color: red;}
 </style>
+</head>
 
+<body>
+<div id="app" class="container">
+    <div class="entryList">
+    <ul>
+        <li v-for="entry in entries">
+            <h2>{{entry.name}}</h2>
+            <ul>
+                <li v-for="tag in entry.tags">
+                    {{tag.name}}:{{tag.value}}
+                </li>
+            </ul>
+        </li>
+    </ul>
+    </div>
+    <div class="entryForm">
+        Entry Name: <input v-model="new_entry" type="text" class='name-entry'>
+        <input v-model="tag_name" type="text">
+        <input v-model="tag_value" v-on:keyup.enter="addEntry" type="text">
+        <button @click="addEntry">Add Entry</button>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.7.7/vue.common.dev.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
 <script>
+    let app = new Vue({
+        el: '#app',
+        data: {
+            entries: [],
 
-function createItems(data) {
-    let entryList = document.getElementById("entryList");
-    for (var item of data) {
-        let li = document.createElement("li");
-        li.innerText = item.name;
-        entryList.appendChild(li);
-    };
-}
-
-
-fetch('http://localhost:8000/entries/')
-    .then(response => response.json())
-    .then(data => createItems(data));
-
-
+            new_entry: "",
+            new_tags: [],
+            tag_name: "",
+            tag_value: "",
+        },
+        methods: {
+            query: function(){
+                axios({
+                    url: 'http://localhost:8000/entries/',
+                    method: 'get',
+                }).then(response => {
+                        this.entries = response.data;
+                })
+            },
+            addEntry: function() {
+                axios({
+                    url: 'http://localhost:8000/entries/',
+                    method: 'post',
+                    data: {"name": this.new_entry, "tags": [{"name": this.tag_name, "value": this.tag_value}]}
+                })
+            }
+        },
+        created: function (){
+            this.query()
+        }
+    })
 </script>
 
-<html>
-    <div class="wrapper">
-        <header class="header">Header</header>
-        <article class="main">
-            <ul id="entryList"></ul>
-        </article>
-    </div>
+</body>
 </html>
