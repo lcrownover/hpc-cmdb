@@ -1,6 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from starlette.middleware import Middleware
-from starlette.middleware.cors import CORSMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, validator
 import psycopg2
 import os
@@ -68,11 +67,8 @@ db_name = "cmdb"
 
 
 origins = [
-    "http://localhost",
     "http://localhost:8080",
-    "http://localhost:8000",
-    "http://127.0.0.1:8080",
-    "http://127.0.0.1:8000",
+    "http://localhost:8080/",
 ]
 
 app = FastAPI()
@@ -80,8 +76,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["POST","GET"],
-    allow_headers=['*'],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
@@ -219,7 +215,7 @@ def db_get_entry(name: str) -> Entry:
     cur.execute(sql, (name,))
     data = cur.fetchall()
     if not data:
-        raise EntryNotFoundError
+        return entry
     for row in data:
         entry.tags.append(Tag(name=row[1], value=row[2]))
     return entry
@@ -308,13 +304,13 @@ async def create_entry(entry: Entry) -> Entry:
     # this is because you may post an entry with a single tag, but you should
     # get back the entry with all the existing tags as well
     db_insert_entry(entry)
-    entry = db_get_entry(entry.name)
+    full_entry = db_get_entry(entry.name)
 
     # add all them tags
     for tag in entry.tags:
-        entry = db_add_tag_to_entry(entry, tag)
+        full_entry = db_add_tag_to_entry(entry, tag)
 
-    return entry
+    return full_entry
 
 
 # @app.delete("/entries/")
