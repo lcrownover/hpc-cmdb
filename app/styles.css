@@ -1,0 +1,11 @@
+.container {
+    display: flex;
+}
+
+.entryList {
+    min-width: 60vw;
+}
+
+.entryForm {
+    min-width: 40vw;
+}

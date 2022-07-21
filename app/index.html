@@ -5,20 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
     <title>Vue App</title>
-    <style>
-        .container {
-            display: flex;
-        }
-
-        .entryList {
-            min-width: 60vw;
-        }
-
-        .entryForm {
-            min-width: 40vw;
-        }
-    </style>
 </head>
 
 <body>
@@ -45,39 +33,55 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.7.7/vue.common.dev.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
-    <script>
+    <script src="scripts.js"></script>
+    <!-- <script>
         let app = new Vue({
             el: '#app',
             data: {
-                entries: [],
+                // entries: [],
 
-                new_entry: "",
-                new_tags: [],
-                tag_name: "",
-                tag_value: "",
+                // new_entry: "",
+                // new_tags: [],
+                // tag_name: "",
+                // tag_value: "",
             },
             methods: {
-                query: function () {
+
+                // query: function () {
+                //     axios({
+                //         url: 'http://localhost:8000/entries/',
+                //         method: 'get',
+                //     }).then(response => {
+                //         this.entries = response.data;
+                //     })
+                // },
+                // addEntry: function () {
+                //     axios({
+                //         url: 'http://localhost:8000/entries/',
+                //         method: 'post',
+                //         data: {"name": this.new_entry, "tags": [{"name": this.tag_name, "value": this.tag_value}]}
+                //     })
+                // }
+                pottergeneral: function () {
                     axios({
-                        url: 'http://localhost:8000/entries/',
                         method: 'get',
+                        url: 'http://hp-api.herokuapp.com/api/characters',
                     }).then(response => {
-                        this.entries = response.data;
+                        console.log(response.data)
+                        // console.log(this.names)
+                        // for (let value of this.names){
+                        // }
+                        // this.names = response.data.house
+
                     })
                 },
-                addEntry: function () {
-                    axios({
-                        url: 'http://localhost:8000/entries/',
-                        method: 'post',
-                        data: {"name": this.new_entry, "tags": [{"name": this.tag_name, "value": this.tag_value}]}
-                    })
-                }
             },
             created: function () {
-                this.query()
+                // this.query()
+                this.pottergeneral()
             }
         })
-    </script>
+    </script> -->
 
 </body>
 
