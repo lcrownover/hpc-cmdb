@@ -1,4 +1,4 @@
-# hpc-cmdb
+# app
 
 ## Project setup
 ```

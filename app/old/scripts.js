@@ -27,6 +27,7 @@ let app = new Vue({
         }
     },
     created: function () {
+        alert('I love tacos')
         this.query()
     }
 })

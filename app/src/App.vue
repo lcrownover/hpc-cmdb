@@ -1,7 +1,5 @@
 <template>
-  <div>
-    {{ quote }}
-  </div>
+  {{quote}}
 </template>
 
 <script>
