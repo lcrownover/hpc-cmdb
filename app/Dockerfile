@@ -18,4 +18,6 @@ COPY . /app
 # build app for production with minification
 RUN npm run build
 
-CMD [ "serve", "-s", "dist" ]
+# CMD [ "serve", "-s", "dist" ]
+ENV PORT 3000
+CMD [ "npm", "run", "serve" ]

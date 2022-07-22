@@ -1,4 +1,6 @@
 <template>
+<h1> HEY THERE GUY </h1>
+<h2> HOWDY FRIEND </h2>
   {{quote}}
 </template>
 
@@ -7,7 +9,7 @@ import axios from 'axios'
 import { ref } from 'vue'
 export default{
   setup(){
-    
+
     const quote = ref('')
     axios.get('http://localhost:8000/entries/')
     .then(response => {
