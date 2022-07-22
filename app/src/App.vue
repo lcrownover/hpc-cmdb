@@ -8,35 +8,35 @@
 </template>
 
 <script>
-import axios from 'axios'
-import { ref } from 'vue'
+import axios from 'axios';
+import {ref} from 'vue';
 export default {
   methods: {
     addBoy() {
-      const boy = ref('')
+      const boy = ref('');
       axios.post('http://localhost:8000/entries/', {
-        name: "batman",
-        tags: [{ name: "love-interest", value: "alfred" }]
+        name: 'batman',
+        tags: [{name: 'love-interest', value: 'alfred'}],
       })
-        .then(response => {
-          boy.value = response
-        })
+          .then((response) => {
+            boy.value = response;
+          });
       return {
-        boy
-      }
-    }
+        boy,
+      };
+    },
   },
   setup() {
-    const quote = ref('')
+    const quote = ref('');
     axios.get('http://localhost:8000/entries/')
-      .then(response => {
-        quote.value = response
-      })
+        .then((response) => {
+          quote.value = response;
+        });
     return {
-      quote
-    }
-  }
-}
+      quote,
+    };
+  },
+};
 </script>
 
 <style>
