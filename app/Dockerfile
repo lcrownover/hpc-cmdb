@@ -1,7 +1,7 @@
 FROM node:lts-alpine
 
 # install simple http server for serving static content
-RUN npm install -g serve
+# RUN npm install -g serve
 
 # make the 'app' folder the current working directory
 WORKDIR /app
@@ -16,7 +16,7 @@ RUN npm install
 COPY . /app
 
 # build app for production with minification
-RUN npm run build
+# RUN npm run build
 
 # CMD [ "serve", "-s", "dist" ]
 ENV PORT 3000
