@@ -5,7 +5,9 @@ services:
     depends_on:
       - db
       - api
-    build: ./app/Dockerfile.dev
+    build:
+      context: app
+      dockerfile: Dockerfile.dev
     restart: always
     volumes:
       - ./app:/app
@@ -15,7 +17,9 @@ services:
     container_name: cmdb-api
     depends_on:
       - db
-    build: ./api/Dockerfile.dev
+    build:
+      context: api
+      dockerfile: Dockerfile.dev
     environment:
       API_USERNAME: "${API_USERNAME}"
       API_PASSWORD: "${API_PASSWORD}"
@@ -28,7 +32,9 @@ services:
       - "8000:8000"
   db:
     container_name: cmdb-db
-    build: ./api/Dockerfile.dev
+    build:
+      context: db
+      dockerfile: Dockerfile.dev
     restart: always
     environment:
       POSTGRES_USER: "${DB_USERNAME}"
