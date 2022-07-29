@@ -1,0 +1,6 @@
+FROM postgres:14
+
+WORKDIR /db
+
+ENV POSTGRES_USER
+

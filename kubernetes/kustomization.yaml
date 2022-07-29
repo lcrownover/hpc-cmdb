@@ -1,0 +1,9 @@
+secretGenerator:
+
+- name: db-password
+  envs:
+  - secrets/env.db.secret
+
+- name: regcred
+  files:
+    - secrets/.
