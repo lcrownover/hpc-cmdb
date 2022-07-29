@@ -14,7 +14,7 @@ export default {
   methods: {
     addBoy() {
       const boy = ref('');
-      axios.post('http://localhost:8000/entries/', {
+      axios.post('http://api:8000/entries/', {
         name: 'batman',
         tags: [{name: 'love-interest', value: 'alfred'}],
       })
@@ -28,7 +28,7 @@ export default {
   },
   setup() {
     const quote = ref('');
-    axios.get('http://localhost:8000/entries/')
+    axios.get('http://api:8000/entries/')
         .then((response) => {
           quote.value = response;
         });

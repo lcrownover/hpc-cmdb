@@ -19,7 +19,7 @@ spec:
             claimName: db-pvc
       containers:
       - name: db
-        image: postgres
+        image: lcrown/hpc-cmdb-db:latest
         ports:
           - containerPort: 5432
             name: postgres
@@ -33,7 +33,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: db-password
-                key: db-password
+                key: DB_PASSWORD
                 optional: false
           - name: POSTGRES_DB
             value: cmdb

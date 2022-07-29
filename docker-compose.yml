@@ -5,7 +5,7 @@ services:
     depends_on:
       - db
       - api
-    build: ./app
+    build: ./app/Dockerfile.dev
     restart: always
     volumes:
       - ./app:/app
@@ -28,7 +28,7 @@ services:
       - "8000:8000"
   db:
     container_name: cmdb-db
-    image: postgres:latest
+    build: ./api/Dockerfile.dev
     restart: always
     environment:
       POSTGRES_USER: "${DB_USERNAME}"

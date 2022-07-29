@@ -13,9 +13,11 @@ spec:
       labels:
         app: api
     spec:
+      # imagePullSecrets:
+      #   - name: regcred
       containers:
       - name: api
-        image: lcrown/hpc-cmdb-api
+        image: lcrown/hpc-cmdb-api:latest
         ports:
           - containerPort: 8000
             name: api
@@ -26,5 +28,5 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: db-password
-                key: db-password
+                key: DB_PASSWORD
                 optional: false

@@ -67,7 +67,8 @@ db_name = "cmdb"
 
 
 origins = [
-    "http://localhost:3000",
+    # "http://app:3000",
+    "*",
 ]
 
 app = FastAPI()
@@ -85,7 +86,7 @@ try:
         database=db_name,
         user=db_username,
         password=db_password,
-        host="cmdb-db",
+        host="db",
         port=db_port,
     )
 except Exception as e:
