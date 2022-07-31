@@ -9,7 +9,7 @@
     {{ quote }}
     </h1>
 </div>
-  
+
 </template>
 
 <script>
@@ -20,6 +20,7 @@ export default {
   name: 'app',
   data (){
     return {
+      api_root: process.env.VUE_APP_API_ROOT,
       responseData: '',
       query: '',
     }
@@ -27,7 +28,7 @@ export default {
   methods: {
     addBoy() {
       const boy = ref('');
-      axios.post('http://localhost:8000/entries/', {
+      axios.post(`http://${this.api_root}/entries/`, {
         name: 'batman',
         tags: [{name: 'love-interest', value: 'alfred'}],
       })
@@ -39,12 +40,17 @@ export default {
       };
     },
     addEntry(){
+<<<<<<< HEAD
       alert(this.query)
       
+=======
+      console.log(this.query)
+
+>>>>>>> ef30b064cbe54f832acf04fc5fd2b3e3e61bf6e9
     },
     fetchy (){
       console.log('Hello there')
-      fetch('http://localhost:8000/entries/')
+      fetch(`http://${this.api_root}/entries/`)
       .then((response) => {
         // console.log(response)
         return response.json()

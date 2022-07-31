@@ -67,7 +67,9 @@ db_name = "cmdb"
 
 
 origins = [
-    # "http://app:3000",
+    "http://app:3000",
+    "http://localhost:3000",
+    "http://api:8000",
     "*",
 ]
 
