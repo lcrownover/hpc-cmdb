@@ -1,15 +1,21 @@
 <template>
-  <h1> HEY THERE GUY </h1><br>
+<div>
+<h1> HEY THERE GUY </h1><br>
   <h2> HOWDY FRIEND </h2><br>
   <button @click="addBoy">Submit</button><br>
   <h3>{{ boy }}</h3>
   <input type="text" v-model="name">
-  {{ quote }}
+  <h1>
+    {{ quote }}
+    </h1>
+</div>
+  
 </template>
 
 <script>
 import axios from 'axios';
 import {ref} from 'vue';
+let banana = 0;
 export default {
   methods: {
     addBoy() {
