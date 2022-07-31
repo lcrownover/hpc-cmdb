@@ -4,7 +4,7 @@
   <h2> HOWDY FRIEND </h2><br>
   <button @click="addEntry">Submit</button><br>
   <h3>{{ boy }}</h3>
-  <input type="text" v-model="query" @keypress="addEntry">
+  <input type="text" v-model="query" @keypress:enter="addEntry">
   <h1>
     {{ quote }}
     </h1>
@@ -39,14 +39,14 @@ export default {
       };
     },
     addEntry(){
-      console.log(this.query)
+      alert(this.query)
       
     },
     fetchy (){
       console.log('Hello there')
       fetch('http://localhost:8000/entries/')
       .then((response) => {
-        console.log(response)
+        // console.log(response)
         return response.json()
       })
       .then(this.setResults)
@@ -59,12 +59,12 @@ export default {
     this.fetchy()
   },
   setup() {
-    console.log('hi there')
+    // console.log('hi there')
     const quote = ref('');
     axios.get('http://localhost:8000/entries/')
         .then((response) => {
           quote.value = response;
-          console.log(quote.value)
+          // console.log(quote.value)
         });
     return {
       quote,
