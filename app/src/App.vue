@@ -40,13 +40,7 @@ export default {
       };
     },
     addEntry(){
-<<<<<<< HEAD
       alert(this.query)
-      
-=======
-      console.log(this.query)
-
->>>>>>> ef30b064cbe54f832acf04fc5fd2b3e3e61bf6e9
     },
     fetchy (){
       console.log('Hello there')
