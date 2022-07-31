@@ -2,9 +2,9 @@
 <div>
 <h1> HEY THERE GUY </h1><br>
   <h2> HOWDY FRIEND </h2><br>
-  <button @click="addBoy">Submit</button><br>
+  <button @click="addEntry">Submit</button><br>
   <h3>{{ boy }}</h3>
-  <input type="text" v-model="name">
+  <input type="text" v-model="query" @keypress="addEntry">
   <h1>
     {{ quote }}
     </h1>
@@ -17,10 +17,17 @@ import axios from 'axios';
 import {ref} from 'vue';
 let banana = 0;
 export default {
+  name: 'app',
+  data (){
+    return {
+      responseData: '',
+      query: '',
+    }
+  },
   methods: {
     addBoy() {
       const boy = ref('');
-      axios.post('http://api:8000/entries/', {
+      axios.post('http://localhost:8000/entries/', {
         name: 'batman',
         tags: [{name: 'love-interest', value: 'alfred'}],
       })
@@ -31,12 +38,33 @@ export default {
         boy,
       };
     },
+    addEntry(){
+      console.log(this.query)
+      
+    },
+    fetchy (){
+      console.log('Hello there')
+      fetch('http://localhost:8000/entries/')
+      .then((response) => {
+        console.log(response)
+        return response.json()
+      })
+      .then(this.setResults)
+    },
+    setResults(results) {
+      this.responseData = results;
+    }
+  },
+  created: function(){
+    this.fetchy()
   },
   setup() {
+    console.log('hi there')
     const quote = ref('');
-    axios.get('http://api:8000/entries/')
+    axios.get('http://localhost:8000/entries/')
         .then((response) => {
           quote.value = response;
+          console.log(quote.value)
         });
     return {
       quote,
