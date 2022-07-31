@@ -20,6 +20,7 @@ export default {
   name: 'app',
   data (){
     return {
+      api_root: process.env.VUE_APP_API_ROOT,
       responseData: '',
       query: '',
     }
@@ -27,7 +28,7 @@ export default {
   methods: {
     addBoy() {
       const boy = ref('');
-      axios.post('http://localhost:8000/entries/', {
+      axios.post(`http://${this.api_root}/entries/`, {
         name: 'batman',
         tags: [{name: 'love-interest', value: 'alfred'}],
       })
@@ -40,11 +41,11 @@ export default {
     },
     addEntry(){
       console.log(this.query)
-      
+
     },
     fetchy (){
       console.log('Hello there')
-      fetch('http://localhost:8000/entries/')
+      fetch(`http://${this.api_root}/entries/`)
       .then((response) => {
         console.log(response)
         return response.json()
