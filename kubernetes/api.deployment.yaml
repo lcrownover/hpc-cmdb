@@ -1,0 +1,32 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      # imagePullSecrets:
+      #   - name: regcred
+      containers:
+      - name: api
+        image: lcrown/hpc-cmdb-api:latest
+        ports:
+          - containerPort: 8000
+            name: api
+        env:
+          - name: DB_USERNAME
+            value: admin
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: db-password
+                key: DB_PASSWORD
+                optional: false

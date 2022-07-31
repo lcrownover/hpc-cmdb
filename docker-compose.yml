@@ -5,7 +5,9 @@ services:
     depends_on:
       - db
       - api
-    build: ./app
+    build:
+      context: app
+      dockerfile: Dockerfile.dev
     restart: always
     volumes:
       - ./app:/app
@@ -15,7 +17,9 @@ services:
     container_name: cmdb-api
     depends_on:
       - db
-    build: ./api
+    build:
+      context: api
+      dockerfile: Dockerfile.dev
     environment:
       API_USERNAME: "${API_USERNAME}"
       API_PASSWORD: "${API_PASSWORD}"
@@ -28,7 +32,9 @@ services:
       - "8000:8000"
   db:
     container_name: cmdb-db
-    image: postgres:latest
+    build:
+      context: db
+      dockerfile: Dockerfile.dev
     restart: always
     environment:
       POSTGRES_USER: "${DB_USERNAME}"
@@ -40,16 +46,5 @@ services:
       - ./db/init:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
-  # app:
-  #   container_name: cmdb-app
-  #   depends_on:
-  #     - db
-  #     - api
-  #   build: ./app
-  #   restart: always
-  #   volumes:
-  #     - ./app:/app
-  #   ports:
-  #     - "8080:8080"
 volumes:
   postgres-db-data:
